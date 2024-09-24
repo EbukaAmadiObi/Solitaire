@@ -14,11 +14,11 @@ RANKS:
 public class Card {
     private Solitaire.Rank rank;
     private Solitaire.Suit suit;
-    private boolean revealed;
+    private boolean flipped;
     public Card(int initRank, int initSuit){
         rank = intToRank(initRank);
         suit = intToSuit(initSuit);
-        revealed = false;
+        flipped = false;
     }
     public Solitaire.Rank getRank() {
         return rank;
@@ -28,15 +28,32 @@ public class Card {
     }
     @Override
     public String toString(){
-        if (revealed) {
+        if (flipped) {
             return rank.toString() + " of " + suit.toString();
         }
         else{
-            return "**" + rank.toString() + " of " + suit.toString() + "**";
+            return "████████████████████";
         }
     }
-    public void reveal(){
-        revealed = true;
+    public void flip(){
+        flipped = true;
+    }
+
+    public boolean isFlipped(){
+        return flipped;
+    }
+
+    public boolean isEqual(Card cardB){
+        if (cardB.suit == suit && cardB.rank == rank){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public boolean canGoOn(Card cardB){
+        return Solitaire.rankToInt(rank) == Solitaire.rankToInt(cardB.rank) + 1 && suit == cardB.suit;
     }
     private Solitaire.Rank intToRank(int intRank) {
         return switch (intRank) {

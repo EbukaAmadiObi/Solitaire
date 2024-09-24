@@ -14,15 +14,21 @@ public class Pile {
         length++;
     }
 
-    public ArrayList<Card> getCards() {
-        return cards;
-    }
-
     public Card getCardAt(int index) {
         if (index >= length){
             return null;
         }
         return cards.get(index);
+    }
+
+    public void flipCard() {
+        if (cards.get(length-1).isFlipped()){
+            System.out.println("Card already flipped!");
+        }
+        else{
+            cards.get(length-1).flip();
+        }
+
     }
 
     @Override

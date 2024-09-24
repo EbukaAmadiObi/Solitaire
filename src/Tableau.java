@@ -18,6 +18,10 @@ public class Tableau {
         piles[pileNo].addCard(card);
     }
 
+    public void flipCard(int pileNo){
+        piles[pileNo].flipCard();
+    }
+
     @Override
     public String toString(){
         String string = "";
