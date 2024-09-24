@@ -11,33 +11,34 @@ RANKS:
   A   ... ... ... ... ... ... ... ... ... J   Q   K
 */
 
-class Card {
-    private Solitaire.Suit suit;
+public class Card {
     private Solitaire.Rank rank;
-
-    public Card(int initSuit, int initRank){
-        suit = intToSuit(initSuit);
+    private Solitaire.Suit suit;
+    private boolean revealed;
+    public Card(int initRank, int initSuit){
         rank = intToRank(initRank);
+        suit = intToSuit(initSuit);
+        revealed = false;
     }
-
-    public Solitaire.Suit getSuit() {
-        return suit;
-    }
-
     public Solitaire.Rank getRank() {
         return rank;
     }
-
-    private  Solitaire.Suit intToSuit(int intSuit) {
-        return switch (intSuit) {
-            case 0 -> Solitaire.Suit.CLUBS;
-            case 1 -> Solitaire.Suit.SPADES;
-            case 2 -> Solitaire.Suit.HEARTS;
-            case 3 -> Solitaire.Suit.DIAMONDS;
-            default -> null;
-        };
+    public Solitaire.Suit getSuit() {
+        return suit;
     }
-    private  Solitaire.Rank intToRank(int intRank) {
+    @Override
+    public String toString(){
+        if (revealed) {
+            return rank.toString() + " of " + suit.toString();
+        }
+        else{
+            return "**" + rank.toString() + " of " + suit.toString() + "**";
+        }
+    }
+    public void reveal(){
+        revealed = true;
+    }
+    private Solitaire.Rank intToRank(int intRank) {
         return switch (intRank) {
             case 1 -> Solitaire.Rank.ACE;
             case 2 -> Solitaire.Rank.TWO;
@@ -52,6 +53,15 @@ class Card {
             case 11 -> Solitaire.Rank.JACK;
             case 12 -> Solitaire.Rank.QUEEN;
             case 13 -> Solitaire.Rank.KING;
+            default -> null;
+        };
+    }
+    private  Solitaire.Suit intToSuit(int intSuit) {
+        return switch (intSuit) {
+            case 0 -> Solitaire.Suit.CLUBS;
+            case 1 -> Solitaire.Suit.SPADES;
+            case 2 -> Solitaire.Suit.HEARTS;
+            case 3 -> Solitaire.Suit.DIAMONDS;
             default -> null;
         };
     }
