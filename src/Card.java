@@ -11,28 +11,48 @@ RANKS:
   A   ... ... ... ... ... ... ... ... ... J   Q   K
 */
 
+import static src.Solitaire.ANSI_RED;
+
 public class Card {
     private Solitaire.Rank rank;
     private Solitaire.Suit suit;
+    private String colour;
     private boolean flipped;
+    private int cardWidth = 10;
+
     public Card(int initRank, int initSuit){
         rank = intToRank(initRank);
-        suit = intToSuit(initSuit);
+        suit = Solitaire.intToSuit(initSuit);
+        if (suit == Solitaire.Suit.HEARTS || suit == Solitaire.Suit.DIAMONDS){
+            colour = Solitaire.ANSI_RED;
+        }
+        else{
+            colour = Solitaire.ANSI_BLACK;
+        }
         flipped = false;
     }
     public Solitaire.Rank getRank() {
         return rank;
     }
+    public String getColour(){
+        if (flipped){
+            return colour;
+        }
+        else{
+            return Solitaire.ANSI_WHITE;
+        }
+    }
     public Solitaire.Suit getSuit() {
         return suit;
     }
+
     @Override
     public String toString(){
         if (flipped) {
-            return rank.toString() + " of " + suit.toString();
+            return String.format(rank.toString() + " of " + suit.toString());
         }
         else{
-            return "████████████████████";
+            return "███████████████";
         }
     }
     public void flip(){
@@ -52,8 +72,16 @@ public class Card {
         }
     }
 
-    public boolean canGoOn(Card cardB){
-        return Solitaire.rankToInt(rank) == Solitaire.rankToInt(cardB.rank) + 1 && suit == cardB.suit;
+    //check if cardB can go on top of self (same suit and correct rank)
+    public boolean canGoOn(Card cardB, boolean onFoundation){
+        if (cardB == null){
+            return false;
+        } else if (onFoundation) {
+            return Solitaire.rankToInt(rank) == Solitaire.rankToInt(cardB.rank) + 1 && suit == cardB.suit;
+        }
+        else{
+            return Solitaire.rankToInt(rank) == Solitaire.rankToInt(cardB.rank) - 1 && colour != cardB.colour;
+        }
     }
     private Solitaire.Rank intToRank(int intRank) {
         return switch (intRank) {
@@ -70,15 +98,6 @@ public class Card {
             case 11 -> Solitaire.Rank.JACK;
             case 12 -> Solitaire.Rank.QUEEN;
             case 13 -> Solitaire.Rank.KING;
-            default -> null;
-        };
-    }
-    private  Solitaire.Suit intToSuit(int intSuit) {
-        return switch (intSuit) {
-            case 0 -> Solitaire.Suit.CLUBS;
-            case 1 -> Solitaire.Suit.SPADES;
-            case 2 -> Solitaire.Suit.HEARTS;
-            case 3 -> Solitaire.Suit.DIAMONDS;
             default -> null;
         };
     }
