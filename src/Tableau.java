@@ -19,6 +19,14 @@ public class Tableau {
         piles[pileNo].flipLastCard();
     }
 
+    public boolean tableauEmpty(boolean empty){
+        for (int i = 0; i<7; i+=1){
+            if (piles[i].getLength() != 0){
+                return false;
+            }
+        }
+        return true;
+    }
     public void printTableau(){
         int printWidth = 20;
         StringBuilder string = new StringBuilder(String.format("%-" + (int) ((printWidth / 2) - 1) + "s", " "));    //print pile numbers

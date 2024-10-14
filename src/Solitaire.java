@@ -13,6 +13,7 @@ public class Solitaire {
     public static final String ANSI_BLACK = "\u001B[37m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_WHITE = "\u001B[38m";
+    public static final String ANSI_ERROR = "\u001B[41;30m";
 
     public static ArrayList<Card> deck = new ArrayList<>();   //The starting deck
     public static Tableau myTableau = new Tableau();  //create the tableau
@@ -23,6 +24,7 @@ public class Solitaire {
     public static int points = 0;
     public static int moves = 0;
     public static boolean gameContinue = true;
+    public static boolean gameWon = true;
 
     public static void main(String[] args) throws InterruptedException {
         for (int j = 0; j<=3; j+=1){    //fill with all cards
@@ -55,8 +57,8 @@ public class Solitaire {
                 String moveCode = in.nextLine();
                 System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                 executeMoveCode(moveCode);
-
-        }
+            }
+            System.out.println("Thanks for playing!");
 
 
     }
@@ -70,7 +72,7 @@ public class Solitaire {
                 gameContinue = false;
             }
             else{
-                System.out.println("Incorrect input format!");
+                wrongInput();
             }
             return;
         }
@@ -101,7 +103,7 @@ public class Solitaire {
                         break;
                     }
                     default:{
-                        System.out.println("Incorrect input format!");
+                        wrongInput();
                     }
                 }
             }
@@ -114,7 +116,7 @@ public class Solitaire {
                         break;
                     }
                     default:{
-                        System.out.println("Incorrect input format!");
+                        wrongInput();
                     }
                 }
 
@@ -139,13 +141,13 @@ public class Solitaire {
                                 break;
                             }
                             default:{
-                                System.out.println("Incorrect input format!");
+                                wrongInput();
                             }
                         }
                         break;
                     }
                     default:{
-                        System.out.println("Incorrect input format!");
+                        wrongInput();
                     }
                 }
             }
@@ -195,6 +197,14 @@ public class Solitaire {
         };
     }
 
+    public static void wrongMove(){
+        System.out.println(ANSI_ERROR + " Oops, can't put that there! "+ ANSI_RESET);
+    }
+
+    public static void wrongInput(){
+        System.out.println(ANSI_ERROR + " Incorrect input format! " + ANSI_RESET);
+    }
+
     public static <A,B> void moveCard(A source, B destination){
         //if moving from pile
         if (source instanceof Pile) {
@@ -210,7 +220,7 @@ public class Solitaire {
                     moves +=1;
                 } else {
                     //if invalid move, print error message
-                    System.out.println("Oops, can't put that there!");
+                    wrongMove();
                 }
             } else if (destination instanceof Pile) { //moving  from pile to another pile
                 int n = ((Pile) source).getLength();    //get length of source pile
@@ -228,7 +238,7 @@ public class Solitaire {
                         n-=1;
                         i-=1;
                     } else {    //else print error message
-                        System.out.println("Oops, can't put that there!");
+                        wrongMove();
                         break;
                     }
                     //This will shift all legal cards to the destination from the first legal card.
@@ -252,7 +262,7 @@ public class Solitaire {
                     }
                 } else {
                     //if invalid move, print error message
-                    System.out.println("Oops, can't put that there!");
+                    wrongMove();
                 }
             } else if (destination instanceof Pile) { //moving from draw pile to another pile
                 var moveSuccess = ((Pile) destination).placeCard(heldCard, false);  //else, try and place at destination
@@ -266,7 +276,7 @@ public class Solitaire {
                         ((ArrayList<Card>) source).addFirst(newFirst);
                     }
                 } else {    //else print error message
-                    System.out.println("Oops, can't put that there!");
+                    wrongMove();
                 }
             }
         }
